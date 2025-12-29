@@ -14,6 +14,7 @@ int main() {
     unsigned int Height = std::stoi(AnswerHeight);
     long long int Pixels = Width * Height;
     std::cout << "\n Pixel Amount: " << Pixels << "\n";
+    //calculate pixel outputs
     std::cout << "Size if uncompressed PNG with alpha: " << Pixels * 4 << " bytes (" << (Pixels / 256) << " KB) \n";
     std::cout << "Size if uncompressed PNG with no alpha: " << Pixels * 3 << " bytes (" << (Pixels / (1024 / 3)) << " KB) \n";
     std::cout << "Size if DXT5/L8 dds: " << Pixels << " bytes (" << (Pixels / 1024) << " KB) \n";
@@ -24,3 +25,4 @@ int main() {
     getchar();
     return 0;
 }
+
