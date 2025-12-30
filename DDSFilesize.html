@@ -12,16 +12,20 @@
 		#MAIN {
 			background-color:black;
 			font-family: Arial, Helvetica, sans-serif;
-			color:white;
+			color:#dddddd;
 			text-align:center;
 		}
 		#Warning
 		{
 			color:red;
 		}
+		#Result
+		{
+			background-color:#111111;
+		}
 		</style>
 	</head>
-	<body id="MAIN">
+	<body id="MAIN" onload="CalculateNumbers()">
 		<div>
 			<h1>DDS Filesize Calculator</h1>
 			<hr width=500em>
@@ -48,17 +52,17 @@
 		</div>
 		<hr width=500em>
 		
-		<div>
+		<div id="Result">
 			<div id="Pixels">8388608 Pixels</div>
 			<hr width=50em>
 			These are the important file formats that you will likely use the most in KSP modding.
 			<hr width=50em>
 			
 			<div>
-				<div id="DXT5">8192 KB for DXT5/L8/DXT5nm</div>
-				<div id="DXT5MP">10384 KB for DXT5/L8/DXT5nm with mipmaps*</div>
-				<div id="DXT1">4096 KB for DXT1</div>
-				<div id="DXT1MP">5461 KB for DXT1 with mipmaps</div>
+				<div id="DXT5"></div>
+				<div id="DXT5MP"></div>
+				<div id="DXT1"></div>
+				<div id="DXT1MP"></div>
 			</div>
 			
 			<div>
@@ -70,8 +74,8 @@
 			</div>
 			
 			<div>
-				<div id="UNCA">32768 KB for uncompressed with alpha</div>
-				<div id="UNC">25165 KB for uncompressed without alpha</div>
+				<div id="UNCA"></div>
+				<div id="UNC"></div>
 			</div>
 			<hr width=200em>
 		</div>
