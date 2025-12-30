@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>DDS Filesize Calculator</title>
+		<style>
+		#Width {
+		  width: 4em;
+		}
+		#Height {
+		  width: 4em;
+		}
+		#MAIN {
+			background-color:black;
+			font-family: Arial, Helvetica, sans-serif;
+			color:white;
+			text-align:center;
+		}
+		#Warning
+		{
+		color:red;
+		}
+		</style>
+	</head>
+	<body id="MAIN">
+		<h1>DDS Filesize Calculations</h1>
+		<hr width=500em>
+		<p>This calculates the filesize of DDS files with and without mipmaps. This variant is HTML for easier website usage. Doesn't include 128-byte DDS header. BC5/7 support not implemented yet.</p>
+		<hr width=500em>
+		<div>
+			<div>
+				Width <input type="number" id="Width" name="Width" min="0" value="4096" step="1"            
+				onchange 
+				onpropertychange 
+				onkeyuponpaste 
+				oninput="CalculateNumbers()"> px
+			</div>
+			<div>
+				Height <input type="number" id="Height" name="Height" min="0" value="2048" step="1" 			
+				onchange 
+				onpropertychange 
+				onkeyuponpaste 
+				oninput="CalculateNumbers()"> px
+			</div>
+			<div id="Warning"></div>
+		</div>
+		<hr width=500em>
+		
+		<div>
+			<div id="Pixels">8388608 Pixels</div>
+			<hr width=50em>
+			These are the important file formats that you will likely use the most in KSP modding.
+			<hr width=50em>
+			
+			<div>
+				<div id="DXT5">8192 KB for DXT5/L8/DXT5nm</div>
+				<div id="DXT5MP">10384 KB for DXT5/L8/DXT5nm with mipmaps*</div>
+				<div id="DXT1">4096 KB for DXT1</div>
+				<div id="DXT1MP">5461 KB for DXT1 with mipmaps</div>
+			</div>
+			
+			<div>
+				<hr width=50em>
+				<p>* L8 file format is used for heightmaps. Mipmaps should not be used on heightmaps.</p>
+				<hr width=500em>
+				<p>Warning: It is not recommended to use uncompressed file formats other than L8; they have a huge filesize. Consider DXT1/DXT5 instead.</p>
+				<hr width=50em>
+			</div>
+			
+			<div>
+				<div id="UNCA">32768 KB for uncompressed with alpha</div>
+				<div id="UNC">25165 KB for uncompressed without alpha</div>
+			</div>
+			<hr width=200em>
+		</div>
+		
+		<script>
+			function CalculateNumbers() {
+				var width = parseInt(document.getElementById("Width").valueAsNumber);
+				var height = parseInt(document.getElementById("Height").valueAsNumber);
+				var pixels = width*height;
+				document.getElementById("Pixels").innerHTML = String(pixels).concat(" Pixels"); 
+				document.getElementById("DXT5").innerHTML = String(Math.floor(pixels/1024)).concat(" KB for DXT5/L8/DXT5nm");
+				document.getElementById("DXT5MP").innerHTML = String(Math.ceil(pixels/807.839753467)).concat(" KB for DXT5/L8/DXT5nm with mipmaps*"); 
+				document.getElementById("DXT1").innerHTML = String(Math.floor(pixels/2048)).concat(" KB for DXT1");
+				document.getElementById("DXT1MP").innerHTML = String(Math.floor(pixels/1365.33333333)).concat(" KB for DXT1 mipmapped");
+				document.getElementById("UNCA").innerHTML = String(Math.floor(pixels/256)).concat(" KB for uncompressed with alpha"); 
+				document.getElementById("UNC").innerHTML = String(Math.floor(pixels/333.3333333333)).concat(" KB for uncompressed without alpha"); 
+				if (((width % 2) != 0) || ((height % 2) != 0))
+				{
+					document.getElementById("Warning").innerHTML = "Warning: One or two of your values are odd. Odd width will result in stretching." ;
+				} 
+				else 
+				{
+					document.getElementById("Warning").innerHTML = "";
+				}
+			};
+		</script>
+	</body>
+</html>
