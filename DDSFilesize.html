@@ -55,10 +55,14 @@
 		<hr width=500em>
 		<!-- The output results. -->
 		<div id="Result">
+			<!-- Pixel count -->
 			<div id="Pixels"></div>
-			<hr width=50em>
-			These are the important file formats that you will likely use the most in KSP modding.
-			<hr width=50em>
+			<!-- Some documentation for reading -->
+			<div>
+				<hr width=50em>
+				<p>These are the important file formats that you will likely use the most in KSP modding.</p>
+				<hr width=50em>
+			</div>
 			<!-- Modern DXT file formats -->
 			<div>
 				<div id="DXT5"></div>
@@ -66,7 +70,7 @@
 				<div id="DXT1"></div>
 				<div id="DXT1MP"></div>
 			</div>
-			<!-- Some details -->
+			<!-- Some documentation for reading -->
 			<div>
 				<hr width=50em>
 				<p>* L8 file format is used for heightmaps. Mipmaps should not be used on heightmaps.</p>
@@ -84,8 +88,10 @@
 		<!-- The real JS -->
 		<script>
 			function CalculateNumbers() {
+				//Get width and height from input values
 				var width = parseInt(document.getElementById("Width").valueAsNumber);
 				var height = parseInt(document.getElementById("Height").valueAsNumber);
+				//Calculate pixel count
 				var pixels = width*height;
 				//The actual math involved
 				document.getElementById("Pixels").innerHTML = String(pixels).concat(" Pixels"); 
@@ -109,4 +115,5 @@
 		</script>
 	</body>
 </html>
+
 
