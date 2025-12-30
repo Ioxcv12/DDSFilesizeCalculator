@@ -2,37 +2,39 @@
 <html>
 	<head>
 		<title>DDS Filesize Calculator</title>
+		<!-- CSS styling for fonts and stuff -->
 		<style>
-		#Width {
-		  width: 4em;
-		}
-		#Height {
-		  width: 4em;
-		}
-		#MAIN {
-			background-color:black;
-			font-family: Arial, Helvetica, sans-serif;
-			color:#dddddd;
-			text-align:center;
-		}
-		#Warning
-		{
-			color:red;
-		}
-		#Result
-		{
-			background-color:#111111;
-		}
+			#Width {
+			  width: 4em;
+			}
+			#Height {
+			  width: 4em;
+			}
+			#MAIN {
+				background-color:black;
+				font-family: Arial, Helvetica, sans-serif;
+				color:#dddddd;
+				text-align:center;
+			}
+			#Warning
+			{
+				color:red;
+			}
+			#Result
+			{
+				background-color:#111111;
+			}
 		</style>
 	</head>
 	<body id="MAIN" onload="CalculateNumbers()">
+		<!-- Title card -->
 		<div>
 			<h1>DDS Filesize Calculator</h1>
 			<hr width=500em>
 			<p>This calculates the filesize of DDS files with and without mipmaps. This variant is HTML for easier website usage. Doesn't include 128-byte DDS header. BC5/7 support not implemented yet.</p>
 			<hr width=500em>
 		</div>
-		
+		<!-- Input values here -->
 		<div>
 			<div>
 				Width <input type="number" id="Width" name="Width" min="0" value="4096" step="1"            
@@ -51,20 +53,20 @@
 			<div id="Warning"></div>
 		</div>
 		<hr width=500em>
-		
+		<!-- The output results. -->
 		<div id="Result">
-			<div id="Pixels">8388608 Pixels</div>
+			<div id="Pixels"></div>
 			<hr width=50em>
 			These are the important file formats that you will likely use the most in KSP modding.
 			<hr width=50em>
-			
+			<!-- Modern DXT file formats -->
 			<div>
 				<div id="DXT5"></div>
 				<div id="DXT5MP"></div>
 				<div id="DXT1"></div>
 				<div id="DXT1MP"></div>
 			</div>
-			
+			<!-- Some details -->
 			<div>
 				<hr width=50em>
 				<p>* L8 file format is used for heightmaps. Mipmaps should not be used on heightmaps.</p>
@@ -72,26 +74,29 @@
 				<p>Warning: It is not recommended to use uncompressed file formats other than L8; they have a huge filesize. Consider DXT1/DXT5 instead.</p>
 				<hr width=50em>
 			</div>
-			
+			<!-- Uncompressed file formats-->
 			<div>
 				<div id="UNCA"></div>
 				<div id="UNC"></div>
 			</div>
 			<hr width=200em>
 		</div>
-		
+		<!-- The real JS -->
 		<script>
 			function CalculateNumbers() {
 				var width = parseInt(document.getElementById("Width").valueAsNumber);
 				var height = parseInt(document.getElementById("Height").valueAsNumber);
 				var pixels = width*height;
+				//The actual math involved
 				document.getElementById("Pixels").innerHTML = String(pixels).concat(" Pixels"); 
-				document.getElementById("DXT5").innerHTML = String(Math.floor(pixels/1024)).concat(" KB for DXT5/L8/DXT5nm");
-				document.getElementById("DXT5MP").innerHTML = String(Math.ceil(pixels/807.839753467)).concat(" KB for DXT5/L8/DXT5nm with mipmaps*"); 
-				document.getElementById("DXT1").innerHTML = String(Math.floor(pixels/2048)).concat(" KB for DXT1");
-				document.getElementById("DXT1MP").innerHTML = String(Math.floor(pixels/1365.33333333)).concat(" KB for DXT1 mipmapped");
-				document.getElementById("UNCA").innerHTML = String(Math.floor(pixels/256)).concat(" KB for uncompressed with alpha"); 
-				document.getElementById("UNC").innerHTML = String(Math.floor(pixels/333.3333333333)).concat(" KB for uncompressed without alpha"); 
+				document.getElementById("DXT5").innerHTML = String(Math.floor(pixels/1024)).concat(" KB for DXT5/L8/DXT5nm"); //Literally just the pixel count
+				document.getElementById("DXT5MP").innerHTML = String(Math.ceil(pixels/807.839753467)).concat(" KB for DXT5/L8/DXT5nm with mipmaps*");  //Pixels*4/3
+				document.getElementById("DXT1").innerHTML = String(Math.floor(pixels/2048)).concat(" KB for DXT1"); //Pixels/2
+				document.getElementById("DXT1MP").innerHTML = String(Math.floor(pixels/1365.33333333)).concat(" KB for DXT1 mipmapped"); //Pixels*2/3
+				//Uncompressed file formats
+				document.getElementById("UNCA").innerHTML = String(Math.floor(pixels/256)).concat(" KB for uncompressed with alpha");  //Pixels*4
+				document.getElementById("UNC").innerHTML = String(Math.floor(pixels/333.3333333333)).concat(" KB for uncompressed without alpha"); //Pixels*3 
+				//Warning indicator
 				if (((width % 2) != 0) || ((height % 2) != 0))
 				{
 					document.getElementById("Warning").innerHTML = "Warning: One or two of your values are odd. Odd width will result in stretching." ;
@@ -104,3 +109,4 @@
 		</script>
 	</body>
 </html>
+
