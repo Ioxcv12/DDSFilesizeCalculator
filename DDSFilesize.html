@@ -72,10 +72,12 @@
 					onpropertychange 
 					onkeyuponpaste 
 					oninput="CalculateNumbers()">
-					<option value="DXT5">DXT5</option>
-					<option value="DXT5nm">DXT5nm</option>
+					<option value="BC7">BC7</option>
+					<option value="BC5">BC5</option>
+					<option value="DXT5">DXT5/BC3</option>
+					<option value="DXT5nm">DXT5nm/BC3n</option>
 					<option value="L8">L8</option>
-					<option value="DXT1">DXT1</option>
+					<option value="DXT1/BC1">DXT1/BC1</option>
 					<hr width=15em>
 					<option value="Uncompressed alpha">Uncompressed alpha</option>
 					<option value="Uncompressed no alpha">Uncompressed no alpha</option>
@@ -129,7 +131,7 @@
 								output =
                 Type = element.options[element.selectedIndex].value;
 				//Final results
-				if ((Type == "DXT5") || (Type == "L8") || (Type == "DXT5nm")) 
+				if ((Type == "DXT5") || (Type == "L8") || (Type == "DXT5nm") || (Type == "BC5") || (Type == "BC7")) 
 				{
 					Amount = pixels/1024 //Literally just the pixel count
 				}
