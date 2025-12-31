@@ -16,17 +16,23 @@
 				color:#dddddd;
 				text-align:center;
 			}
-			#Warning
+			.warning
 			{
 				color:red;
 			}
 			#Result
 			{
-				background-color:#111111;
+				font-size:5em;
+			}
+			#Pixels
+			{
+				font-size:2em;
 			}
 		</style>
 	</head>
 	<body id="MAIN" onload="CalculateNumbers()">
+	
+	
 		<!-- Title card -->
 		<div>
 			<h1>DDS Filesize Calculator</h1>
@@ -34,8 +40,11 @@
 			<p>This calculates the filesize of DDS files with and without mipmaps. This variant is HTML for easier website usage. Doesn't include 128-byte DDS header. BC5/7 support not implemented yet.</p>
 			<hr width=500em>
 		</div>
+		
+		
 		<!-- Input values here -->
 		<div>
+		
 			<div>
 				Width <input type="number" id="Width" name="Width" min="0" value="4096" step="1"            
 				onchange 
@@ -43,6 +52,7 @@
 				onkeyuponpaste 
 				oninput="CalculateNumbers()"> px
 			</div>
+			
 			<div>
 				Height <input type="number" id="Height" name="Height" min="0" value="2048" step="1" 			
 				onchange 
@@ -50,70 +60,120 @@
 				onkeyuponpaste 
 				oninput="CalculateNumbers()"> px
 			</div>
-			<div id="Warning"></div>
+			
+			<!-- Odd number warning-->
+			<div id="Warning" class="warning"></div>
+			<hr width=100em>
+			
+			<!-- Select DDS type -->
+			<div>
+				<label for="Type">Choose a DDS format</label>
+				<select name="Type" id="Type" onchange 
+					onpropertychange 
+					onkeyuponpaste 
+					oninput="CalculateNumbers()">
+					<option value="DXT5">DXT5</option>
+					<option value="DXT5nm">DXT5nm</option>
+					<option value="L8">L8</option>
+					<option value="DXT1">DXT1</option>
+					<hr width=15em>
+					<option value="Uncompressed alpha">Uncompressed alpha</option>
+					<option value="Uncompressed no alpha">Uncompressed no alpha</option>
+				</select>
+				<br>
+			</div>
+			
+			<!-- Mipmaps or no mipmaps -->
+			<label for="Mipmaps">Mipmapped</label>
+			<input type="checkbox" id="Mipmaps" name="Mipmaps" value="Mipmaps" onchange 
+				onpropertychange 
+				onkeyuponpaste 
+				oninput="CalculateNumbers()">
+			<!-- DDS format warning -->
+			
+			<div id="DDSWarning" class="warning"></div>
 		</div>
 		<hr width=500em>
+		
+		
 		<!-- The output results. -->
+		<div id="Pixels"></div>
+		<hr width=100em>
 		<div id="Result">
-			<!-- Pixel count -->
-			<div id="Pixels"></div>
-			<!-- Some documentation for reading -->
+			<hr width=50em>
+			<!-- The result -->
 			<div>
-				<hr width=50em>
-				<p>These are the important file formats that you will likely use the most in KSP modding.</p>
-				<hr width=50em>
+				<div id="Result"></div>
 			</div>
-			<!-- Modern DXT file formats -->
+			<!-- Text -->
 			<div>
-				<div id="DXT5"></div>
-				<div id="DXT5MP"></div>
-				<div id="DXT1"></div>
-				<div id="DXT1MP"></div>
-			</div>
-			<!-- Some documentation for reading -->
-			<div>
-				<hr width=50em>
-				<p>* L8 file format is used for heightmaps. Mipmaps should not be used on heightmaps.</p>
 				<hr width=500em>
-				<p>Warning: It is not recommended to use uncompressed file formats other than L8; they have a huge filesize. Consider DXT1/DXT5 instead.</p>
+				<p>It is not recommended to use uncompressed file formats other than L8; they have a huge filesize. Consider DXT1/DXT5 instead.</p>
 				<hr width=50em>
-			</div>
-			<!-- Uncompressed file formats-->
-			<div>
-				<div id="UNCA"></div>
-				<div id="UNC"></div>
 			</div>
 			<hr width=200em>
 		</div>
+		
+		
 		<!-- The real JS -->
 		<script>
 			function CalculateNumbers() {
-				//Get width and height from input values
 				var width = parseInt(document.getElementById("Width").valueAsNumber);
 				var height = parseInt(document.getElementById("Height").valueAsNumber);
-				//Calculate pixel count
 				var pixels = width*height;
-				//The actual math involved
-				document.getElementById("Pixels").innerHTML = String(pixels).concat(" Pixels"); 
-				document.getElementById("DXT5").innerHTML = String(Math.floor(pixels/1024)).concat(" KB for DXT5/L8/DXT5nm"); //Literally just the pixel count
-				document.getElementById("DXT5MP").innerHTML = String(Math.ceil(pixels/807.839753467)).concat(" KB for DXT5/L8/DXT5nm with mipmaps*");  //Pixels*4/3
-				document.getElementById("DXT1").innerHTML = String(Math.floor(pixels/2048)).concat(" KB for DXT1"); //Pixels/2
-				document.getElementById("DXT1MP").innerHTML = String(Math.floor(pixels/1365.33333333)).concat(" KB for DXT1 mipmapped"); //Pixels*2/3
-				//Uncompressed file formats
-				document.getElementById("UNCA").innerHTML = String(Math.floor(pixels/256)).concat(" KB for uncompressed with alpha");  //Pixels*4
-				document.getElementById("UNC").innerHTML = String(Math.floor(pixels/333.3333333333)).concat(" KB for uncompressed without alpha"); //Pixels*3 
+				var Amount = pixels;
+				//Pixel counting
+				document.getElementById("Pixels").textContent = String(pixels).concat(" Pixels"); 
+				//Detection
+				element = document.querySelector('#Type');
+								output =
+                Type = element.options[element.selectedIndex].value;
+				//Final results
+				if ((Type == "DXT5") || (Type == "L8") || (Type == "DXT5nm")) 
+				{
+					Amount = pixels/1024 //Literally just the pixel count
+				}
+				else if (Type == "DXT1")
+				{
+					Amount=pixels/2048 //Pixels/2
+				}
+				else if (Type == "Uncompressed alpha") 
+				{
+					Amount=pixels/256 //4*Pixels
+				}
+				else if (Type == "Uncompressed no alpha") 
+				{
+					Amount=pixels/333.333333333 //3*Pixels
+				}
+				else
+				{
+					Amount=pixels
+				}
+				//Mipmaps
+				Mipmaps = document.getElementById("Mipmaps").checked;
+				if (Mipmaps == true) 
+				{
+					Amount *= 4/3
+				}
+				if ((Mipmaps == true) && (Type == "L8"))
+				{
+					document.getElementById("DDSWarning").textContent = "Warning: Mipmaps are generally recommended to not be used on grayscale heightmap formats such as L8.";
+				}
+				else 
+				{
+					document.getElementById("DDSWarning").textContent = "";
+				}
+				document.getElementById("Result").textContent = String(Math.floor(Amount)).concat(" KB for texture");
 				//Warning indicator
 				if (((width % 2) != 0) || ((height % 2) != 0))
 				{
-					document.getElementById("Warning").innerHTML = "Warning: One or two of your values are odd. Odd width will result in stretching." ;
+					document.getElementById("Warning").textContent = "Warning: One or two of your values are odd. Odd width will result in stretching." ;
 				} 
 				else 
 				{
-					document.getElementById("Warning").innerHTML = "";
+					document.getElementById("Warning").textContent = "";
 				}
 			};
 		</script>
 	</body>
 </html>
-
-
