@@ -24,6 +24,10 @@
 			{
 				font-size:5em;
 			}
+			#Byteresult
+			{
+				font-size:5em;
+			}
 			#Pixels
 			{
 				font-size:2em;
@@ -37,7 +41,7 @@
 		<div>
 			<h1>DDS Filesize Calculator</h1>
 			<hr width=500em>
-			<p>This calculates the filesize of DDS files with and without mipmaps. This variant is HTML for easier website usage. Doesn't include 128-byte DDS header.</p>
+			<p>This calculates the filesize of DDS files with and without mipmaps, including the header. This variant is HTML for easier website usage. </p>
 			<hr width=500em>
 		</div>
 		
@@ -74,8 +78,9 @@
 					oninput="CalculateNumbers()">
 					<option value="BC7">BC7</option>
 					<option value="BC5">BC5</option>
-					<option value="DXT5">DXT5/BC3</option>
+					<option value="BC4">BC4</option>
 					<option value="DXT5nm">DXT5nm/BC3n</option>
+					<option value="DXT5">DXT5/BC3</option>
 					<option value="DXT1">DXT1/BC1</option>
 					<option value="L8">L8</option>
 					<hr width=15em>
@@ -106,6 +111,7 @@
 			<!-- The result -->
 			<div>
 				<div id="Result"></div>
+				<div id="Byteresult"></div>
 			</div>
 			<!-- Text -->
 			<div>
@@ -133,30 +139,31 @@
 				//Final results
 				if ((Type == "DXT5") || (Type == "L8") || (Type == "DXT5nm") || (Type == "BC5") || (Type == "BC7")) 
 				{
-					Amount = pixels/1024 //Literally just the pixel count
+					Amount = pixels/1024; //Literally just the pixel count
 				}
-				else if (Type == "DXT1")
+				else if (Type == "DXT1" || Type == "BC4")
 				{
-					Amount=pixels/2048 //Pixels/2
+					Amount=pixels/2048; //Pixels/2
 				}
 				else if (Type == "Uncompressed alpha") 
 				{
-					Amount=pixels/256 //4*Pixels
+					Amount=pixels/256; //4*Pixels
 				}
 				else if (Type == "Uncompressed no alpha") 
 				{
-					Amount=pixels/333.333333333 //3*Pixels
+					Amount=pixels/333.333333333; //3*Pixels
 				}
 				else
 				{
-					Amount=pixels
+					Amount=pixels;
 				}
 				//Mipmaps
 				Mipmaps = document.getElementById("Mipmaps").checked;
 				if (Mipmaps == true) 
 				{
-					Amount *= 4/3
+					Amount *= 4/3;
 				}
+				Amount += 0.125;
 				if ((Mipmaps == true) && (Type == "L8"))
 				{
 					document.getElementById("DDSWarning").textContent = "Warning: Mipmaps are generally recommended to not be used on grayscale heightmap formats such as L8.";
@@ -166,6 +173,7 @@
 					document.getElementById("DDSWarning").textContent = "";
 				}
 				document.getElementById("Result").textContent = String(Math.floor(Amount)).concat(" KB for texture");
+				document.getElementById("Byteresult").textContent = String(Amount*1024).concat(" bytes");
 				//Warning indicator
 				if (((width % 2) != 0) || ((height % 2) != 0))
 				{
